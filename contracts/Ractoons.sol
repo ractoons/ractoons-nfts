@@ -70,8 +70,8 @@ contract Ractoons is ERC721Metadata {
     using SafeMath for uint256;
     using Counters for Counters.Counter;
 
-    uint256 public constant MAX_NFT_SUPPLY = 10000;
-    uint256 public constant MINT_PRICE = 2.5 ether;
+    uint256 public constant MAX_NFT_SUPPLY = 10;
+    uint256 public constant MINT_PRICE = 0.1 ether;
 
     bool public paused = true;
     uint256 public pendingCount = MAX_NFT_SUPPLY;
@@ -88,7 +88,7 @@ contract Ractoons is ERC721Metadata {
 
     uint256 private _totalSupply;
     uint256 private _giveawayMax = 75;
-    uint256[10001] private _pendingIDs;
+    uint256[11] private _pendingIDs;
 
     // Giveaway winners
     mapping(uint256 => address) private _giveaways;
