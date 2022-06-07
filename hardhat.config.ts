@@ -9,7 +9,6 @@ import "solidity-coverage";
 
 dotenv.config();
 const privateKey = process.env.PRIVATE_KEY || "";
-const gameEmissionsKey = process.env.GAME_EMISSIONS_PK || "";
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -25,7 +24,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 // Go to https://hardhat.org/config/ to learn more
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.4",
+  solidity: "0.8.14",
   networks: {
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
@@ -33,17 +32,14 @@ const config: HardhatUserConfig = {
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     amber: {
-      url: "https://api.avax-test.network/ext/bc/C/rpc",
-      gas: 8000000,
-      gasPrice: 25000000000,
-      chainId: 43113,
-      accounts: [privateKey, gameEmissionsKey],
+      url: "http://35.220.203.194:8545",
+      chainId: 10001,
+      accounts: [privateKey],
     },
     sbch: {
-      url: "https://api.avax.network/ext/bc/C/rpc",
-      gasPrice: 42000000000,
-      chainId: 43114,
-      accounts: [privateKey, gameEmissionsKey],
+      url: "https://smartbch.fountainhead.cash/mainnet",
+      chainId: 10000,
+      accounts: [privateKey],
     },
   },
   gasReporter: {

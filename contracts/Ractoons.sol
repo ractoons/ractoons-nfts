@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.13;
+pragma solidity 0.8.14;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -13,7 +13,6 @@ contract ERC721Metadata is ERC721Enumerable, Ownable {
     string private baseURI;
     string public baseExtension = ".json";
 
-    bool public revealed = false;
     string public notRevealedUri;
     uint256 private _maxNftSupply;
     
@@ -21,11 +20,9 @@ contract ERC721Metadata is ERC721Enumerable, Ownable {
         string memory name_,
         string memory symbol_,
         string memory baseURI_,
-        string memory notRevealedUri_,
         uint256 maxNftSupply_
     ) ERC721(name_, symbol_) {
         setBaseURI(baseURI_);
-        setNotRevealedURI(notRevealedUri_);
         _maxNftSupply = maxNftSupply_;
     }
 
@@ -39,16 +36,6 @@ contract ERC721Metadata is ERC721Enumerable, Ownable {
         baseURI = baseURI_;
     }
 
-    function reveal()
-        external onlyOwner {
-        revealed = true;
-    }
-
-    function setNotRevealedURI(string memory _notRevealedURI)
-        private onlyOwner {
-        notRevealedUri = _notRevealedURI;
-    }
-
     function tokenURI(uint256 tokenId)
         public view override returns (string memory) {
         require(
@@ -56,8 +43,8 @@ contract ERC721Metadata is ERC721Enumerable, Ownable {
             "ERC721Metadata: URI query for nonexistent token"
         );
 
-        if (!_exists(tokenId) || !revealed) {
-            return notRevealedUri;
+        if (!_exists(tokenId)) {
+            return "Token doesn't exist";
         }
 
         return bytes(baseURI).length > 0
@@ -99,13 +86,11 @@ contract Ractoons is ERC721Metadata {
 
     constructor(
         string memory baseURI_,
-        string memory notRevealedUri_,
         address admin_
     ) ERC721Metadata(
         "Ractoons",
         "RAC",
         baseURI_,
-        notRevealedUri_,
         MAX_NFT_SUPPLY
     ) {
         _admin = admin_;
@@ -284,7 +269,6 @@ contract Ractoons is ERC721Metadata {
     }
 
     // onlyOwner
-
     function pause(bool state_)
         public onlyOwner {
         paused = state_;
